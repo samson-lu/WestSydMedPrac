@@ -62,7 +62,7 @@ namespace WestSydMedPrac.Classes
                 SqlParameter[] parameters = { new SqlParameter("@Patient_ID", patient_ID) };
 
                 //The following line calls the method on our DAL that actually does the work.
-                this._dtPatient = myDal.ExecutesStoredProc("usp.GetPatient", parameters);
+                this._dtPatient = myDal.ExecuteStoredProc("usp_GetPatient", parameters);
 
                 //First check if the Datatable has any rows
                 if(_dtPatient != null && _dtPatient.Rows.Count > 0)
@@ -123,7 +123,41 @@ namespace WestSydMedPrac.Classes
         #endregion Private Methods
 
         #region Public Data Methods
+        public int UpdatePatient()
+        {
+            try
+            {
+                SqlDataAccessLayer myDal = new SqlDataAccessLayer();
+                SqlParameter[] parameters =
+                {
+                    new SqlParameter("@Patient_ID", this.Patient_ID),
+                    new SqlParameter("@Gender", this.Gender),
+                    new SqlParameter("@DateOfBirth", this.DateOfBirth),
+                    new SqlParameter("@FirstName", this.FirstName),
+                    new SqlParameter("@LastName", this.LastName),
+                    new SqlParameter("@Street", this.Street),
+                    new SqlParameter("@Suburb", this.Suburb),
+                    new SqlParameter("@State",this.State),
+                    new SqlParameter("@PostCode", this.PostCode),
+                    new SqlParameter("@HomePhone", this.HomePhone),
+                    new SqlParameter("@Mobile", this.Mobile),
+                    new SqlParameter("@MedicareNumber", this.MedicareNumber),
+                    new SqlParameter("@Notes", this.PatientNotes)
+                };
 
+                //Have to explicity convert date value for DateOfBirth (2eth parameter) to SqlDbType.Date
+                parameters[2].SqlDbType = SqlDbType.Date;
+
+                //Define a variable for the value to be returned by this method.
+                int rowsAffected = myDal.ExecuteNonQuerySP("usp_UpdatePatient", parameters);
+                return rowsAffected;
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("The Patient's details could not be updated!", ex);
+            }
+        }
         #endregion Public Data Methods
     }
 }

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Data;
 using System.Data.SqlClient;
 using System.Configuration;
+using System.Diagnostics;
 
 namespace WestSydMedPrac.Classes
 {
@@ -30,7 +31,7 @@ namespace WestSydMedPrac.Classes
 
         #region Methods
 
-        public DataTable ExecutesStoredProc(string SPName, SqlParameter[] parameters)
+        public DataTable ExecuteStoredProc(string SPName, SqlParameter[] parameters)
         {
             //Create a connection object
             SqlConnection conn = new SqlConnection(_connString);
@@ -65,6 +66,41 @@ namespace WestSydMedPrac.Classes
             {
                 cmd.Parameters.Add(parameter);
             }
+        }
+
+        //'internal' access modifier means that the method is 'public' only to other code in 
+        //this assembly.
+        internal int ExecuteNonQuerySP(string SPName, SqlParameter[] parameters)
+        {
+            //Create a connection object
+            SqlConnection conn = new SqlConnection(_connString);
+
+            //Createa command object
+            SqlCommand cmd = new SqlCommand(SPName, conn);
+
+
+
+            cmd.CommandType = CommandType.StoredProcedure;
+            
+
+            FillParameter(cmd, parameters);
+
+            cmd.Connection.Open();
+
+            //Execute the Stored Procedure
+            int _ = cmd.ExecuteNonQuery();
+            //C# from version 7.0 implemented a thing called a discard, which where the variable itself
+            //isn't actually required
+
+            Debug.Print($"The db connection is  { cmd.Connection.State.ToString()}");
+            if(cmd.Connection.State == ConnectionState.Open)
+            {
+                cmd.Connection.Close();
+            }
+
+            //Return the result to the calling code
+            return _;
+
         }
 
         #endregion Methods
