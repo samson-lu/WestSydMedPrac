@@ -113,8 +113,8 @@ namespace WestSydMedPrac.Classes
 
             //Get the patient's Appointments and assign the appointment
             //property
-            //Appointments appointments = new Appointments(this);
-            //this.Appointments = appointments;
+            Appointments appointments = new Appointments(this);
+            this.Appointments = appointments;
 
         }
 
@@ -123,7 +123,39 @@ namespace WestSydMedPrac.Classes
         #endregion Private Methods
 
         #region Public Data Methods
-        public int UpdatePatient()
+        public override int Get()
+        {
+            try
+            {
+                SqlDataAccessLayer myDal = new SqlDataAccessLayer();
+
+                //Set up the parameter array for the Stored Procedure to accept the Patient_ID
+                SqlParameter[] parameters = { new SqlParameter("@Patient_ID", this.Patient_ID) };
+
+                //The following line calls the method on our DAL that actually does the work.
+                this._dtPatient = myDal.ExecuteStoredProc("usp_GetPatient", parameters);
+
+                //First check if the Datatable has any rows
+                if (_dtPatient != null && _dtPatient.Rows.Count > 0)
+                {
+                    //Map the patient's details to this class's properties by passing the first row
+                    //of the table which has the Patient's details in it.
+                    LoadPatientProperties(_dtPatient.Rows[0]);
+                    return 1;
+                }
+                else
+                {
+                    return -1;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("Unable to retrieve the Patient's details!", ex);
+            }
+        }
+
+        public override int Update() 
         {
             try
             {
@@ -156,6 +188,82 @@ namespace WestSydMedPrac.Classes
             {
 
                 throw new Exception("The Patient's details could not be updated!", ex);
+            }
+        }
+
+        public override int Delete()
+        {
+            try
+            {
+                SqlDataAccessLayer myDAL = new SqlDataAccessLayer();
+                //CLASS TASK
+                //Write the code to delete a partien from the database.
+                //Use 'usp_DeletePatient' stored procedure. That stored procedure only take 1 parameter
+                SqlParameter[] parameters =
+                {
+                    new SqlParameter("@Patient_ID",this.Patient_ID)
+                };
+
+                int rowsAffected = myDAL.ExecuteNonQuerySP("usp_DeletePatient", parameters);
+                return rowsAffected;
+
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("The Patient's details could not be deleted!", ex);
+            }
+        }
+
+        public override int Insert()
+        {
+            try
+            {
+                SqlDataAccessLayer myDal = new SqlDataAccessLayer();
+                SqlParameter[] parameters =
+                {
+                    new SqlParameter("@Patient_ID", this.Patient_ID),
+                    new SqlParameter("@Gender", this.Gender),
+                    new SqlParameter("@DateOfBirth", this.DateOfBirth),
+                    new SqlParameter("@FirstName", this.FirstName),
+                    new SqlParameter("@LastName", this.LastName),
+                    new SqlParameter("@Street", this.Street),
+                    new SqlParameter("@Suburb", this.Suburb),
+                    new SqlParameter("@State",this.State),
+                    new SqlParameter("@PostCode", this.PostCode),
+                    new SqlParameter("@HomePhone", this.HomePhone),
+                    new SqlParameter("@Mobile", this.Mobile),
+                    new SqlParameter("@MedicareNumber", this.MedicareNumber),
+                    new SqlParameter("@Notes", this.PatientNotes)
+                };
+
+                //Have to explicity convert date value for DateOfBirth (2eth parameter) to SqlDbType.Date
+                parameters[2].SqlDbType = SqlDbType.Date;
+
+                //Define a variable for the value to be returned by this method.
+                int rowsAffected = myDal.ExecuteNonQuerySP("usp_InsertPatient", parameters);
+                return rowsAffected;
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("The Patient could not be added!", ex);
+            }
+        }
+
+        public void GetAppointments()
+        {
+            try
+            {
+                //Get all of this patients appointments
+                Appointments myAppointments = new Appointments(this);
+                //Assign the appointments to this Patient's enumerated list of appointments
+                this.Appointments = myAppointments;
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("Unable to retrieve the Patient's Appointments!", ex);
             }
         }
         #endregion Public Data Methods

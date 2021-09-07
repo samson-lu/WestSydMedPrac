@@ -122,7 +122,7 @@ namespace WestSydMedPrac.Classes
         #endregion Private Methods
 
         #region Public Data Methods
-        public virtual int Load()
+        public virtual int Get() //This is a 'get' the patient from the DB.
         {
             throw new System.NotImplementedException();
         }

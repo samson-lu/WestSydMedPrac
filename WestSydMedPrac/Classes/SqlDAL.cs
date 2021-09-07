@@ -90,7 +90,7 @@ namespace WestSydMedPrac.Classes
             //Execute the Stored Procedure
             int _ = cmd.ExecuteNonQuery();
             //C# from version 7.0 implemented a thing called a discard, which where the variable itself
-            //isn't actually required
+            //isn't actually required gets discarded. Used for values being returned from (amongst other things).
 
             Debug.Print($"The db connection is  { cmd.Connection.State.ToString()}");
             if(cmd.Connection.State == ConnectionState.Open)

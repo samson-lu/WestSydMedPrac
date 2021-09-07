@@ -58,24 +58,65 @@ namespace WestSydMedPrac
                 //    patientDetails += drPatient["Patient_ID"] + " " + drPatient["FirstName"] + "\n";
 
                 //}
-                Patient myExistingPatient = new Patient(5);
-                MessageBox.Show($" {myExistingPatient.Patient_ID} \n First Name: {myExistingPatient.FirstName}, Last Name: {myExistingPatient.LastName}");
+                //Patient myExistingPatient = new Patient(7);
+                //MessageBox.Show($" {myExistingPatient.Patient_ID} \n First Name: {myExistingPatient.FirstName}, Last Name: {myExistingPatient.LastName}");
 
-                myExistingPatient.LastName = "Panagopoulous";
-                if(myExistingPatient.UpdatePatient() == 1)
+                //myExistingPatient.LastName = "Weinhouse";
+                //if(myExistingPatient.Update() == 1)
+                //{
+                //    MessageBox.Show("Update worked");
+                //}
+
+                //if(MessageBox.Show("Are you sure you want to permanently DELETE this Patient?","DELETE?", MessageBoxButton.YesNo) == MessageBoxResult.Yes) 
+                //{
+                //    if(myExistingPatient.Delete() == 1)
+                //    {
+                //        MessageBox.Show("Patient DELETED FOR EVER!!");
+                //    }
+                //}
+
+                txtBlkErrorMessage.Text = string.Empty;
+
+                Patient gottenPatient = new Patient();
+                //Check that the User enters an integer.
+                if(int.TryParse(txtPatient_ID.Text, out int patientID))
                 {
-                    MessageBox.Show("Update worked");
+                    gottenPatient.Patient_ID = patientID;
+                    if (gottenPatient.Get() != 1)
+                    {
+                        txtBlkErrorMessage.Text = $"There are no patients with Patient ID {gottenPatient.Patient_ID}! Please enter a different Patient ID.";
+                    }
+                    else
+                    {
+                        MessageBox.Show(gottenPatient.Patient_ID.ToString() + " " + gottenPatient.FirstName + " " + gottenPatient.LastName);
+
+                        //The 'foreach' is designed by Microsoft to iterate objects that implement IEnumerable and IEnumerator interfaces.
+
+                        string appoinmentList = string.Empty;
+                        foreach (Appointment anAppointment in gottenPatient.Appointments)
+                        {
+                            appoinmentList += $"Pracitioner ID: {anAppointment.Practitioner_ID} Practitioner: {anAppointment.PractitionerFirstName} {anAppointment.PractitionerLastName} Date: {anAppointment.AppointmentDate} Time: {anAppointment.AppointmentTime} Patient ID: {anAppointment.Patient_ID} \n";
+                        }
+
+                        MessageBox.Show(appoinmentList);
+
+                    }
+                }
+                else
+                {
+                    txtBlkErrorMessage.Text = "You have entered an invalid Patient_ID. Please enter a number.";
                 }
 
+                
               
             }
             catch (SqlException sqlEx)//Catch the more specific exceptions that we anticipate
             {
-                MessageBox.Show("SQL Exception Occured" + sqlEx.Message);
+                MessageBox.Show("SQL Exception Occured " + sqlEx.Message);
             }
             catch (Exception ex)//Catch everything else that we have not anticipated
             {
-                MessageBox.Show("General Exception Occurred" + ex.Message);
+                MessageBox.Show("General Exception Occurred " + ex.Message);
             }
             finally //Regardless of whether we have an exception occurs or not, do the following
             {

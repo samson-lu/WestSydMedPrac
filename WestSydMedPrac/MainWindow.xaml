@@ -7,7 +7,13 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800" WindowStartupLocation="CenterScreen">
     <Grid>
-        <Button x:Name="btnConnect" Content="Connect" HorizontalAlignment="Left" Margin="371,200,0,0" VerticalAlignment="Top" Width="75" Click="btnConnect_Click"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="25*"/>
+            <ColumnDefinition Width="173*"/>
+        </Grid.ColumnDefinitions>
+        <Button x:Name="btnConnect" Content="Connect" HorizontalAlignment="Left" Margin="271,200,0,0" VerticalAlignment="Top" Width="75" Click="btnConnect_Click" Grid.Column="1"/>
+        <TextBox x:Name="txtPatient_ID" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="257,80,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
+        <TextBlock x:Name="txtBlkErrorMessage" Grid.Column="1" HorizontalAlignment="Left" Margin="444,71,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="77" Width="179" Foreground="#FF951919"/>
 
     </Grid>
 </Window>
