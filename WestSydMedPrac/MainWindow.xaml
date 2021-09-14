@@ -5,15 +5,133 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WestSydMedPrac"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800" WindowStartupLocation="CenterScreen">
+        Title="Western Sydney Medical Practice" Height="525" Width="800" WindowStartupLocation="CenterScreen">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="25*"/>
-            <ColumnDefinition Width="173*"/>
-        </Grid.ColumnDefinitions>
-        <Button x:Name="btnConnect" Content="Connect" HorizontalAlignment="Left" Margin="271,200,0,0" VerticalAlignment="Top" Width="75" Click="btnConnect_Click" Grid.Column="1"/>
-        <TextBox x:Name="txtPatient_ID" Grid.Column="1" HorizontalAlignment="Left" Height="23" Margin="257,80,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
-        <TextBlock x:Name="txtBlkErrorMessage" Grid.Column="1" HorizontalAlignment="Left" Margin="444,71,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="77" Width="179" Foreground="#FF951919"/>
+        <TabControl x:Name="tabctrlMain" Grid.Row="0" Margin="12, 2, 12, 2" SelectionChanged="tabctrlMain_SelectionChanged">
+
+            <!--#region Practitioner Tab-->
+            <TabItem x:Name="tabItemPractitioners" Header="Practitioners">
+
+            </TabItem>
+            <!--#endregion Practitioner Tab-->
+
+            <!--#region Patient Tab-->
+            <TabItem x:Name="tabItemPatients" Header="Patients">
+                <Grid Background="SkyBlue">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="3*"/>
+                        <RowDefinition Height="3*"/>
+                        <RowDefinition Height="1*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="3*"/>
+                        <!--<ColumnDefinition Width="15*"/>
+                        <ColumnDefinition Width="261*"/>
+                        <ColumnDefinition Width="457*"/>-->
+                    </Grid.ColumnDefinitions>
+                    <ListView x:Name="lvPatients" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="5" Background="SkyBlue" SelectionChanged="lvPatients_SelectionChanged">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Patient Id" DisplayMemberBinding="{Binding Path=Patient_ID}"/>
+                                <GridViewColumn Header="Gender" DisplayMemberBinding="{Binding Path=Gender}"/>
+                                <GridViewColumn Header="Date Of Birth" DisplayMemberBinding="{Binding Path=DateOfBirth, StringFormat=dd/MM/yyyy}"/>
+                                <GridViewColumn Header="First Name" DisplayMemberBinding="{Binding Path=FirstName}"/>
+                                <GridViewColumn Header="Last Name" DisplayMemberBinding="{Binding Path=LastName}"/>
+                                <GridViewColumn Header="Street" DisplayMemberBinding="{Binding Path=Street}"/>
+                                <GridViewColumn Header="Suburb" DisplayMemberBinding="{Binding Path=Suburb}"/>
+                                <GridViewColumn Header="State" DisplayMemberBinding="{Binding Path=State}"/>
+                                <GridViewColumn Header="PostCode" DisplayMemberBinding="{Binding Path=PostCode}"/>
+                                <GridViewColumn Header="Home Phone" DisplayMemberBinding="{Binding Path=HomePhone}"/>
+                                <GridViewColumn Header="Mobile Phone" DisplayMemberBinding="{Binding Path=Mobile}"/>
+                                <GridViewColumn Header="Medicare Number" DisplayMemberBinding="{Binding Path=MedicareNumber}"/>
+                                <GridViewColumn Header="Patient Notes" DisplayMemberBinding="{Binding Path=PatientNotes}"/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                    <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="2*"/>
+                        </Grid.ColumnDefinitions>
+                        <Button x:Name="btnPatFirstRecord" Content="|&lt;" Grid.Row="0" Width="35" Margin="4,4,54,4" Click="btnPatFirstRecord_Click"/>
+                        <Button x:Name="btnPatPreviousRecord" Content="&lt;" Grid.Row="0" Grid.Column="1" Width="35" Margin="5,4,152,4" Click="btnPatPreviousRecord_Click"/>
+                        <Button x:Name="btnPatNextRecord" Content="&gt;" Grid.Row="0" Grid.Column="1" Width="35" Margin="61,4,96,4" Click="btnPatNextRecord_Click"/>
+                        <Button x:Name="btnPatLastRecord" Content=">|" Grid.Row="0" Grid.Column="1" Width="35" Margin="152,4,5,4" Click="btnPatLastRecord_Click"/>
+                        <Label Content="Patient Id:" Grid.Row="1" Grid.Column="0" Margin="4,4,4,4"/>
+                        <TextBox x:Name="txtPatient_ID" Grid.Row="1" Grid.Column="1" Margin="4,4,4,4" IsEnabled="False" DataContext="{Binding SelectedItem, ElementName=lvPatients}" Text="{Binding Patient_ID, Mode=OneWay}"/>
+                        <Label Content="Gender:" Grid.Row="2" Grid.Column="0" Margin="4,4,4,4"/>
+                        <ComboBox x:Name="cboGender" Grid.Row="2" Grid.Column="1" Margin="4,4,4,4" DataContext="{Binding SelectedItem, ElementName=lvPatients}" Text="{Binding Gender, Mode=OneWay}" SelectionChanged="cboGender_SelectionChanged">
+                            <ComboBoxItem>M</ComboBoxItem>
+                            <ComboBoxItem>F</ComboBoxItem>
+                        </ComboBox>
+                        <Label Content="First Name:" Grid.Row="3" Grid.Column="0" Margin="4,4,4,4"/>
+                        <TextBox x:Name="txtPatFirstName" Grid.Row="3" Grid.Column="1" Margin="4,4,4,4" DataContext="{Binding SelectedItem, ElementName=lvPatients}" Text="{Binding FirstName, Mode=OneWay}"/>
+                        <Label Content="Last Name:" Grid.Row="4" Grid.Column="0" Margin="4,4,4,4"/>
+                        <TextBox x:Name="txtPatLastName" Grid.Row="4" Grid.Column="1" Margin="4,4,4,4" DataContext="{Binding SelectedItem, ElementName=lvPatients}" Text="{Binding LastName, Mode=OneWay}"/>
+                        <Label Content="Street:" Grid.Row="5" Grid.Column="0" Margin="4,4,4,4"/>
+                        <TextBox x:Name="txtPatStreet" Grid.Row="5" Grid.Column="1" Margin="4,4,4,4" DataContext="{Binding SelectedItem, ElementName=lvPatients}" Text="{Binding Street, Mode=OneWay}"/>
+
+                    </Grid>
+                    <Grid Grid.Row="1" Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="101*"/>
+                            <ColumnDefinition Width="154*"/>
+                            <ColumnDefinition Width="202*"/>
+                        </Grid.ColumnDefinitions>
+                        <Label Content="Suburb:" Grid.Row="0" Grid.Column="0" Margin="4,4,4,4"/>
+                        <TextBox x:Name="txtPatSuburb" Grid.Row="0" Grid.Column="1" Margin="4,4,4,4" DataContext="{Binding SelectedItem, ElementName=lvPatients}" Text="{Binding Suburb, Mode=OneWay}"/>
+                        <Label Content="State:" Grid.Row="1" Grid.Column="0" Margin="4,4,4,4"/>
+                        <ComboBox x:Name="cboPatState" Grid.Row="1" Grid.Column="1" Margin="4,4,4,4" DataContext="{Binding SelectedItem, ElementName=lvPatients}" Text="{Binding State, Mode=OneWay}" SelectionChanged="cboPatState_SelectionChanged">
+                            <ComboBoxItem>ACT</ComboBoxItem>
+                            <ComboBoxItem>NSW</ComboBoxItem>
+                            <ComboBoxItem>VIC</ComboBoxItem>
+                            <ComboBoxItem>QLD</ComboBoxItem>
+                            <ComboBoxItem>NT</ComboBoxItem>
+                            <ComboBoxItem>SA</ComboBoxItem>
+                            <ComboBoxItem>WA</ComboBoxItem>
+                            <ComboBoxItem>TAS</ComboBoxItem>
+                        </ComboBox>
+                        <Label Content="Post Code:" Grid.Row="2" Grid.Column="0" Margin="4,4,4,4"/>
+                        <TextBox x:Name="txtPatPostCode" MaxLength="4" Grid.Row="2" Grid.Column="1" Margin="4,4,4,4" DataContext="{Binding SelectedItem, ElementName=lvPatients}" Text="{Binding PostCode, Mode=OneWay}"/>
+                        <Label Content="Home Ph:" Grid.Row="3" Grid.Column="0" Margin="4,4,4,4"/>
+                        <TextBox x:Name="txtPatHomePhone" MaxLength="10" Grid.Row="3"  Grid.Column="1" Margin="4,4,4,4" DataContext="{Binding SelectedItem, ElementName=lvPatients}" Text="{Binding HomePhone, Mode=OneWay}"/>
+                        <Label Content="Mobile Ph:" Grid.Row="4" Grid.Column="0" Margin="4,4,4,4"/>
+                        <TextBox x:Name="txtPatMobilePhone" MaxLength="10" Grid.Row="4" Grid.Column="1" Margin="4,4,4,4" DataContext="{Binding SelectedItem, ElementName=lvPatients}" Text="{Binding Mobile, Mode=OneWay}"/>
+                        <Label Content="Medicare No.:" Grid.Row="5" Grid.Column="0" Margin="4,4,4,4"/>
+                        <TextBox x:Name="txtPatMedicareNumber" MaxLength="15" Grid.Row="5" Grid.Column="1" Margin="4,4,4,4" DataContext="{Binding SelectedItem, ElementName=lvPatients}" Text="{Binding MedicareNumber, Mode=OneWay}"/>
+                        <Label Content="Date Of Birth:" Grid.Row="0" Grid.Column="2" Margin="4,4,4,4"/>
+                        <DatePicker x:Name="dtpPatDateOfBirth" Grid.Row="0" Grid.Column="2" Width="110" Margin="88,4,4,4" DataContext="{Binding SelectedItem, ElementName=lvPatients}" SelectedDate="{Binding DateOfBirth, Mode=OneWay}"/>
+                        <Label Content="Notes" FontSize="18" VerticalAlignment="Center" Grid.Row="1" Grid.Column="2" Margin="15,0,0,0" Height="33"/>
+                        <TextBox x:Name="txtPatNotes" Grid.Row="2" Grid.RowSpan="4" TextWrapping="Wrap" Grid.Column="2" Margin="20,0,4,4" DataContext="{Binding SelectedItem, ElementName=lvPatients}" Text="{Binding PatientNotes, Mode=OneWay}"/>
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <!--#endregion Patient Tab-->
+
+            <!--#region Appointments Tab-->
+            <TabItem x:Name="tabItemAppointments" Header="Appointments">
+
+            </TabItem>
+            <!--#endregion Appointment Tab-->
+
+        </TabControl>
 
     </Grid>
 </Window>

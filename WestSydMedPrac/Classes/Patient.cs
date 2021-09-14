@@ -87,6 +87,15 @@ namespace WestSydMedPrac.Classes
             }
         }
 
+        /// <summary>
+        /// Instantiates a Patient object from a DataRow: Used by the Patients Collection class.
+        /// </summary>
+        /// <param name="patientRow"> DataRow: Containing Patient Details from the database.</param>
+        public Patient(DataRow patientRow) : base()
+        {
+            LoadPatientProperties(patientRow);
+        }
+
 
 
 

@@ -31,6 +31,27 @@ namespace WestSydMedPrac.Classes
 
         #region Methods
 
+        public DataTable ExecuteStoredProc(string SPName)
+        {
+            //Create a connection object
+            SqlConnection conn = new SqlConnection(_connString);
+
+            //Createa command object
+            SqlCommand cmd = new SqlCommand(SPName, conn);
+
+
+
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Connection.Open();
+
+            SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+            DataTable dataTable = new DataTable();
+            dataTable.Load(dataReader);
+            return dataTable;
+        }
+
         public DataTable ExecuteStoredProc(string SPName, SqlParameter[] parameters)
         {
             //Create a connection object
