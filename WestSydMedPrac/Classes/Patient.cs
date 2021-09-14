@@ -101,6 +101,15 @@ namespace WestSydMedPrac.Classes
 
         #endregion Constructors
 
+        #region Public Methods
+
+        public static int ComparePatientName(Patient p1, Patient p2)
+        {
+            return p1.LastName.CompareTo(p2.LastName);
+        }
+
+        #endregion Public Methods
+
 
         #region Private Methods
 
@@ -124,7 +133,6 @@ namespace WestSydMedPrac.Classes
             //property
             Appointments appointments = new Appointments(this);
             this.Appointments = appointments;
-
         }
 
 

@@ -40,6 +40,11 @@ namespace WestSydMedPrac
         {
             InitializeComponent();
 
+            //Sort the Patient List by LastName
+            //http://www.codedigest.com/Articles/CSHARP/84_Sorting_in_Generic_List.aspx
+            Comparison<Patient> compareLastName = new Comparison<Patient>(Patient.ComparePatientName);
+            allPatients.Sort(compareLastName);
+
             //Load the Patient's tab ListView
             LoadPatientListView();
         }
@@ -62,22 +67,44 @@ namespace WestSydMedPrac
 
         private void btnPatFirstRecord_Click(object sender, RoutedEventArgs e)
         {
-
+            //There's no point going anymore if there are no records in the list.
+            if(lvPatients.Items.Count > 0)
+            {
+                //Set the .SelectedIndex to the first item in the list
+                lvPatients.SelectedIndex = 0;
+                //Scroll the list view up to the top if it's a long list.
+                lvPatients.ScrollIntoView(lvPatients.SelectedItem);
+            }
         }
 
         private void btnPatPreviousRecord_Click(object sender, RoutedEventArgs e)
         {
-
+            //We want at least one record 
+            if(lvPatients.SelectedIndex >= 1)
+            {
+                lvPatients.SelectedIndex = lvPatients.SelectedIndex - 1;
+                lvPatients.ScrollIntoView(lvPatients.SelectedItem);
+            }
         }
 
         private void btnPatNextRecord_Click(object sender, RoutedEventArgs e)
         {
-
+            //TODO - Test this with no patients in the list
+            if(lvPatients.SelectedIndex < lvPatients.Items.Count - 1)
+            {
+                lvPatients.SelectedIndex = lvPatients.SelectedIndex + 1;
+                lvPatients.ScrollIntoView(lvPatients.SelectedItem);
+            }
         }
 
         private void btnPatLastRecord_Click(object sender, RoutedEventArgs e)
         {
-
+            //Move to the last Item in the list
+            if(lvPatients.Items.Count > 0)
+            {
+                lvPatients.SelectedIndex = lvPatients.Items.Count - 1;
+                lvPatients.ScrollIntoView(lvPatients.SelectedItem);
+            }
         }
 
         private void cboGender_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -86,6 +113,149 @@ namespace WestSydMedPrac
         }
 
         private void cboPatState_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void btnAddNewPatient_Click(object sender, RoutedEventArgs e)
+        {
+            //Toggle the button between "Add New" and "Save"
+            if(btnAddNewPatient.Content.ToString() == "Add New")
+            {
+                //Toggle the button to "Save"
+                btnAddNewPatient.Content = "Save";
+                //Deselect the ListView item
+                lvPatients.SelectedIndex = -1;
+                //Disable the ListView 
+                lvPatients.IsEnabled = false;
+                //Clear the controls 
+                //TODO - Revisit this using a recursive method call that check the children type.
+                //ClearPatientTabControls();
+
+
+                //Toggle the other buttons also
+                btnCancelPatient.IsEnabled = true;
+                btnUpdatePatient.IsEnabled = false;
+                btnDeletePatient.IsEnabled = false;
+
+            }
+            else
+            {
+                //Do the save
+                //Check if the control validate (i.e. that we have data in the controls)
+                if (ValidatePatientControls())
+                {
+                    //Do the save
+                    Patient newPatient = new Patient();
+                    AssignPropertiesToPatient(newPatient);
+                    
+                    if(newPatient.Insert() == 1)
+                    {
+                        //TODO - Up to here
+                    }
+                }
+
+                //Toggle the button back to "Add New"
+            }
+        }
+
+        private bool ValidatePatientControls()
+        {
+            if(cboGender.SelectedIndex == -1)
+            {
+                MessageBox.Show("Please select a Gender!", "Patient Gender?", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                return false;
+            }
+            else if (dtpPatDateOfBirth.SelectedDate == null)
+            {
+                MessageBox.Show("Please select a Date Of Birth!", "Patient Date Of Birth?", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                return false;
+            }
+            else if (txtPatFirstName.Text == string.Empty || txtPatFirstName.Text == null)
+            {
+                MessageBox.Show("Please enter a First Name!", "First Name?", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                return false;
+            }
+            else if (txtPatLastName.Text == string.Empty || txtPatLastName.Text == null)
+            {
+                MessageBox.Show("Please enter a Last Name!", "Last Name?", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                return false;
+            }
+            else if (txtPatStreet.Text == string.Empty || txtPatStreet.Text == null)
+            {
+                MessageBox.Show("Please enter Street address details!", "Street Number & Name?", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                return false;
+            }
+            else if (txtPatSuburb.Text == string.Empty || txtPatSuburb.Text == null)
+            {
+                MessageBox.Show("Please enter a Suburb Name!", "Suburb Name?", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                return false;
+            }
+            else if (cboPatState.SelectedIndex == -1)
+            {
+                MessageBox.Show("Please select a State!", "State?", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                return false;
+            }
+            else if (txtPatPostCode.Text == string.Empty || txtPatPostCode.Text == null)
+            {
+                MessageBox.Show("Please enter a Post Code!", "Post Code?", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                return false;
+            }
+            else if (txtPatHomePhone.Text == string.Empty || txtPatHomePhone.Text == null)
+            {
+                MessageBox.Show("Please enter a Home Phone number!", "Home Phone Number?", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                return false;
+            }
+            else if (txtPatMobilePhone.Text == string.Empty || txtPatMobilePhone.Text == null)
+            {
+                MessageBox.Show("Please enter a Mobile Phone Number!", "Mobile Phone Number?", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                return false;
+            }
+            else if (txtPatMedicareNumber.Text == string.Empty || txtPatMedicareNumber.Text == null)
+            {
+                MessageBox.Show("Please enter a Medicare Number!", "Medicare Number?", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        private void ClearPatientTabControls()
+        {
+            txtPatient_ID.Clear();
+            cboGender.SelectedIndex = -1;
+            dtpPatDateOfBirth.SelectedDate = null;
+            txtPatFirstName.Clear();
+            txtPatLastName.Clear();
+            txtPatStreet.Clear();
+            txtPatSuburb.Clear();
+            cboPatState.SelectedIndex = -1;
+            txtPatPostCode.Clear();
+            txtPatHomePhone.Clear();
+            txtPatMobilePhone.Clear();
+            txtPatMedicareNumber.Clear();
+            txtPatNotes.Clear();
+            
+        }
+
+        private void btnUpdatePatient_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnDeletePatient_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnCancelPatient_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnAppointmentsPatient_Click(object sender, RoutedEventArgs e)
         {
 
         }
