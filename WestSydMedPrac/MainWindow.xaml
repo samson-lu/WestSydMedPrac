@@ -24,8 +24,11 @@
                         <RowDefinition Height="1*"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="2*"/>
-                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="43*"/>
+                        <ColumnDefinition Width="45*"/>
+                        <ColumnDefinition Width="95*"/>
+                        <ColumnDefinition Width="122*"/>
+                        <ColumnDefinition Width="457*"/>
                         <!--<ColumnDefinition Width="15*"/>
                         <ColumnDefinition Width="261*"/>
                         <ColumnDefinition Width="457*"/>-->
@@ -49,7 +52,7 @@
                             </GridView>
                         </ListView.View>
                     </ListView>
-                    <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="1">
+                    <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="4">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="*"/>
                             <RowDefinition Height="*"/>
@@ -81,7 +84,7 @@
                         <TextBox x:Name="txtPatStreet" Grid.Row="5" Grid.Column="1" Margin="4,4,4,4" DataContext="{Binding SelectedItem, ElementName=lvPatients}" Text="{Binding Street, Mode=OneWay}"/>
 
                     </Grid>
-                    <Grid Grid.Row="1" Grid.Column="1">
+                    <Grid Grid.Row="1" Grid.Column="4">
                         <Grid.RowDefinitions>
                             <RowDefinition/>
                             <RowDefinition/>
@@ -121,7 +124,7 @@
                         <Label Content="Notes" FontSize="18" VerticalAlignment="Center" Grid.Row="1" Grid.Column="2" Margin="15,0,0,0" Height="33"/>
                         <TextBox x:Name="txtPatNotes" Grid.Row="2" Grid.RowSpan="4" TextWrapping="Wrap" Grid.Column="2" Margin="20,0,4,4" DataContext="{Binding SelectedItem, ElementName=lvPatients}" Text="{Binding PatientNotes, Mode=OneWay}"/>
                     </Grid>
-                    <Grid Grid.Row="2" Grid.Column="0">
+                    <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="*"/>
@@ -129,7 +132,7 @@
                         <Button x:Name="btnAddNewPatient" Content="Add New" Grid.Row="0" Grid.Column="0" Width="80" Height="30" Click="btnAddNewPatient_Click"/>
                         <Button x:Name="btnUpdatePatient" Content="Update" Grid.Row="0" Grid.Column="1" Width="80" Height="30" Click="btnUpdatePatient_Click"/>
                     </Grid>
-                    <Grid Grid.Row="2" Grid.Column="1">
+                    <Grid Grid.Row="2" Grid.Column="4">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="3*"/>
                             <ColumnDefinition Width="4*"/>
