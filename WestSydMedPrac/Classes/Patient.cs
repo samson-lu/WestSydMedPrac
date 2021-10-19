@@ -214,7 +214,7 @@ namespace WestSydMedPrac.Classes
             {
                 SqlDataAccessLayer myDAL = new SqlDataAccessLayer();
                 //CLASS TASK
-                //Write the code to delete a partien from the database.
+                //Write the code to delete a patient from the database.
                 //Use 'usp_DeletePatient' stored procedure. That stored procedure only take 1 parameter
                 SqlParameter[] parameters =
                 {

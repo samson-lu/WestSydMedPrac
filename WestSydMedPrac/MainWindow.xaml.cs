@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 //Add the following References
-using System.Data.SqlClient; //Connected library of classes that DO care which plateform we're connecting to.
+using System.Data.SqlClient; //Connected library of classes that DO care which platform we're connecting to.
                              //So SqlClient is specific to Microsoft SQL Server
 using System.Data; //Disconnected Library of classes that don't care which 
                    //platform (i.e proprietry database server) we're connecting 
@@ -45,6 +45,9 @@ namespace WestSydMedPrac
             Comparison<Patient> compareLastName = new Comparison<Patient>(Patient.ComparePatientName);
             allPatients.Sort(compareLastName);
 
+            //First time the Window Loads go into the Practitioner's tab.
+            tabctrlMain.SelectedItem = tabItemPractitioners;
+
             //Load the Patient's tab ListView
             LoadPatientListView();
         }
@@ -57,12 +60,27 @@ namespace WestSydMedPrac
 
         private void tabctrlMain_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            //We can figure out which tab has been selected as follows
+            TabItem selectedTab = (TabItem)tabctrlMain.SelectedItem;
+            //Once I have the selected tab, I can determine which one it is
+            //We could use a switch block to react to each differently
+            switch (selectedTab.Name)
+            {
+                case "tabItemPractitioners":
+                    //Do the things that need to be done here for the Practitioners tab.
+                    break;
+                case "tabItemPatients":
+                    //Do the things that need to be done here for the Patients tab.
+                    break;
+                case "tabItemAppointments":
+                    //Do the things that need to be done here for the Appointments tab.
+                    break;
+            }
         }
 
         private void lvPatients_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            e.Handled = true;
         }
 
         private void btnPatFirstRecord_Click(object sender, RoutedEventArgs e)
@@ -109,12 +127,14 @@ namespace WestSydMedPrac
 
         private void cboGender_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            //Sometime event handlers may fire twice, for a given event,
+            //setting e.Handle to true, prevents a recursive firing of the event.
+            e.Handled = true;
         }
 
         private void cboPatState_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            e.Handled = true;
         }
 
         private void btnAddNewPatient_Click(object sender, RoutedEventArgs e)
@@ -384,7 +404,7 @@ namespace WestSydMedPrac
 
         private void btnAppointmentsPatient_Click(object sender, RoutedEventArgs e)
         {
-
+            //TODO - Students are required to implement this functionality
         }
     }
 
