@@ -31,6 +31,8 @@ namespace WestSydMedPrac
 
         //Get all the Patients from the Database
         Patients allPatients = new Patients();
+        //Get all the Practitioner from the Database
+        Practitioners allPractitioners = new Practitioners();
 
         /// <summary>
         /// MainWindow for the Western Sydne Medical Practice uses a Tab control
@@ -50,6 +52,9 @@ namespace WestSydMedPrac
 
             //Load the Patient's tab ListView
             LoadPatientListView();
+
+            //Load the Practitioner's tab ListView
+            LoadPractitionerListView();
         }
 
         private void LoadPatientListView()
@@ -406,6 +411,304 @@ namespace WestSydMedPrac
         {
             //TODO - Students are required to implement this functionality
         }
+
+        #region Practitioner
+        private void LoadPractitionerListView()
+        {
+            allPractitioners = new Practitioners();
+            Comparison<Practitioner> comparePracLastName = new Comparison<Practitioner>(Practitioner.ComparePractitionerName); 
+            allPractitioners.Sort(comparePracLastName);
+            //bind the patient's collection to the listview control
+            lvPractitioners.ItemsSource = allPractitioners;
+        }
+
+        private void btnPractFirstRecord_Click(object sender, RoutedEventArgs e)
+        {
+            if (lvPractitioners.Items.Count > 0)
+            {
+                lvPractitioners.SelectedIndex = 0;
+                lvPractitioners.ScrollIntoView(lvPractitioners.SelectedItem);
+            }
+        }
+
+        private void btnPractPreviousRecord_Click(object sender, RoutedEventArgs e)
+        {
+            if (lvPractitioners.SelectedIndex >= 1)
+            {
+                lvPractitioners.SelectedIndex = lvPractitioners.SelectedIndex - 1;
+                lvPractitioners.ScrollIntoView(lvPractitioners.SelectedItem);
+            }
+        }
+
+        private void btnPractNextRecord_Click(object sender, RoutedEventArgs e)
+        {
+            if (lvPractitioners.SelectedIndex < lvPractitioners.Items.Count - 1)
+            {
+                lvPractitioners.SelectedIndex = lvPractitioners.SelectedIndex + 1;
+                lvPractitioners.ScrollIntoView(lvPractitioners.SelectedItem);
+            }
+        }
+
+        private void btnPractLastRecord_Click(object sender, RoutedEventArgs e)
+        {
+            if (lvPractitioners.Items.Count > 0)
+            {
+                lvPractitioners.SelectedIndex = lvPractitioners.Items.Count - 1;
+                lvPractitioners.ScrollIntoView(lvPractitioners.SelectedItem);
+            }
+        }
+
+        private void btnAddNewPractitioner_Click(object sender, RoutedEventArgs e)
+        {
+            if (btnAddNewPractitioner.Content.ToString() == "Add New")
+            {
+                btnAddNewPractitioner.Content = "Save";
+                lvPractitioners.SelectedIndex = -1;
+                lvPractitioners.IsEnabled = false;
+
+                btnCancelPractitioner.IsEnabled = true;
+                btnUpdatePractitioner.IsEnabled = false;
+                btnDeletePractitioner.IsEnabled = false;
+            }
+            else
+            {
+                if (ValidatePractitionerControls())
+                {
+                    Practitioner newPractitioner = new Practitioner();
+                    AssignPropertiesToPractitioner(newPractitioner);
+
+                    if (newPractitioner.Insert() == 1)
+                    {
+                        MessageBox.Show("new Practitioner's details has been successfully saved!", "Details Saved", MessageBoxButton.OK, MessageBoxImage.Information);
+                        RefreshPractitionerList();
+                        lvPractitioners.SelectedIndex = lvPractitioners.Items.Count - 1;
+                        lvPractitioners.ScrollIntoView(lvPractitioners.SelectedItem);
+                    }
+                }
+
+                btnAddNewPractitioner.Content = "Add New";
+                btnCancelPractitioner.IsEnabled = false;
+                btnUpdatePractitioner.IsEnabled = true;
+                btnDeletePractitioner.IsEnabled = true;
+                lvPractitioners.IsEnabled = true;
+            }
+
+        }
+
+
+
+        private void btnUpdatePractitioner_Click(object sender, RoutedEventArgs e)
+        {
+            if (lvPractitioners.SelectedItem != null)
+            {
+                string message = "The Practitioner's details will be updated! \n Do you wish to continue?";
+                string caption = "Update Patient?";
+                if (MessageBox.Show(message, caption, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                {
+                    Practitioner selectedPractitioner;
+                    selectedPractitioner = (Practitioner)lvPractitioners.SelectedItem;
+                    int selectedIndex = lvPractitioners.SelectedIndex;
+                    AssignPropertiesToPractitioner(selectedPractitioner);
+
+                    try
+                    {
+                        if (selectedPractitioner.Update() == 1)
+                        {
+                            MessageBox.Show("Practitioner's details successfully updated", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                            RefreshPatientList();
+                            lvPractitioners.SelectedIndex = selectedIndex;
+                            lvPractitioners.ScrollIntoView(lvPractitioners.SelectedIndex);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+
+                        message = $"Something went wrong! \n The Practitioner's details were NOT updated. \n {ex.Message}";
+                        MessageBox.Show(message, "ERROR!", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Please select a Practitioner to be updated first.", "Select a Practitioner", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                }
+            }
+        }
+
+        private void btnDeletePractitioner_Click(object sender, RoutedEventArgs e)
+        {
+            if (lvPractitioners.SelectedItem != null)
+            {
+                string message = $"Are you sure you want to Delete this Practitioners? \nThe Practitioner's details and all Appointments will be permenantly deleted!";
+                string caption = "Delete Patient?";
+
+                if (MessageBox.Show(message, caption, MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+                {
+                    Practitioner selectedPractitioner;
+                    selectedPractitioner = (Practitioner)lvPractitioners.SelectedItem;
+                    try
+                    {
+                        if (selectedPractitioner.Delete() == 1)
+                        {
+                            MessageBox.Show("Practitioner Successfully deleted!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                            RefreshPractitionerList();
+                            lvPractitioners.SelectedIndex = 0;
+                            lvPractitioners.ScrollIntoView(lvPractitioners.SelectedIndex);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+
+                        message = $"Something went wrong! \nThe practitioner's details were NOT deleted! \n {ex.Message}";
+                        MessageBox.Show(message, "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please select a Practitioner to be deleted first.");
+            }
+        }
+
+        private void btnCancelPractitioner_Click(object sender, RoutedEventArgs e)
+        {
+            btnCancelPractitioner.IsEnabled = false;
+            btnAddNewPractitioner.Content = "Add New";
+            lvPractitioners.IsEnabled = true;
+            btnUpdatePractitioner.IsEnabled = true;
+            btnDeletePractitioner.IsEnabled = true;
+            ClearPractitionerTabControls();
+            LoadPractitionerListView();
+            lvPractitioners.SelectedIndex = 0;
+            lvPractitioners.ScrollIntoView(lvPractitioners.SelectedIndex);
+        }
+
+
+
+        private void cboType_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            e.Handled = true;
+        }
+
+        private void cboPractState_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            e.Handled = true;
+        }
+
+        //Practitioner's Method
+
+        private void lvPractitioners_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            e.Handled = true;
+        }
+        private void ClearPractitionerTabControls()
+        {
+            txtPractitioner_ID.Clear();
+            cboType.SelectedIndex = -1;
+            txtPractRegNo.Clear();
+            txtPractFirstName.Clear();
+            txtPractLastName.Clear();
+            txtPractStreet.Clear();
+            txtPractSuburb.Clear();
+            txtPractPostCode.Clear();
+            txtPractHomePhone.Clear();
+            txtPractMobilePhone.Clear();
+            cboPractState.SelectedIndex = -1;
+            Monday.IsChecked = false;
+            Tuesday.IsChecked = false;
+            Wednesday.IsChecked = false;
+            Thursday.IsChecked = false;
+            Friday.IsChecked = false;
+            Saturday.IsChecked = false;
+            Sunday.IsChecked = false;
+
+        }
+        private void RefreshPractitionerList()
+        {
+            allPractitioners = null;
+            allPractitioners = new Practitioners();
+            LoadPractitionerListView();
+        }
+
+        private void AssignPropertiesToPractitioner(Practitioner newPractitioner)
+        {
+
+            newPractitioner.PractnrTypeName_Ref = cboType.Text;
+            newPractitioner.FirstName = txtPractFirstName.Text;
+            newPractitioner.LastName = txtPractLastName.Text;
+            newPractitioner.Street = txtPractStreet.Text;
+            newPractitioner.Suburb = txtPractSuburb.Text;
+            newPractitioner.State = cboPractState.Text;
+            newPractitioner.PostCode = txtPractPostCode.Text;
+            newPractitioner.HomePhone = txtPractHomePhone.Text;
+            newPractitioner.Mobile = txtPractMobilePhone.Text;
+            newPractitioner.RegistrationNumber = txtPractRegNo.Text;
+            newPractitioner.Monday = Monday.IsChecked.Value;
+            newPractitioner.Tuesday = Tuesday.IsChecked.Value;
+            newPractitioner.Wednesday = Wednesday.IsChecked.Value;
+            newPractitioner.Thursday = Thursday.IsChecked.Value;
+            newPractitioner.Friday = Friday.IsChecked.Value;
+            newPractitioner.Saturday = Saturday.IsChecked.Value;
+            newPractitioner.Sunday = Sunday.IsChecked.Value;
+        }
+
+        private bool ValidatePractitionerControls()
+        {
+            if (txtPractFirstName.Text == string.Empty || txtPractFirstName.Text == null)
+            {
+                MessageBox.Show("Please enter a First Name!", "First Name?", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                return false;
+            }
+            else if (txtPractLastName.Text == string.Empty || txtPractLastName.Text == null)
+            {
+                MessageBox.Show("Please enter a Last Name!", "Last Name?", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                return false;
+            }
+            else if (txtPractStreet.Text == string.Empty || txtPractStreet.Text == null)
+            {
+                MessageBox.Show("Please enter Street address details!", "Street Number & Name?", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                return false;
+            }
+            else if (txtPractSuburb.Text == string.Empty || txtPractSuburb.Text == null)
+            {
+                MessageBox.Show("Please enter a Suburb Name!", "Suburb Name?", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                return false;
+            }
+            else if (cboPractState.SelectedIndex == -1)
+            {
+                MessageBox.Show("Please select a State!", "State?", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                return false;
+            }
+            else if (txtPractPostCode.Text == string.Empty || txtPractPostCode.Text == null)
+            {
+                MessageBox.Show("Please enter a Post Code!", "Post Code?", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                return false;
+            }
+            else if (txtPractHomePhone.Text == string.Empty || txtPractHomePhone.Text == null)
+            {
+                MessageBox.Show("Please enter a Home Phone number!", "Home Phone Number?", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                return false;
+            }
+            else if (txtPractMobilePhone.Text == string.Empty || txtPractMobilePhone.Text == null)
+            {
+                MessageBox.Show("Please enter a Mobile Phone Number!", "Mobile Phone Number?", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                return false;
+            }
+            else if (txtPractRegNo.Text == string.Empty || txtPractRegNo.Text == null)
+            {
+                MessageBox.Show("Please enter a registration Number!", "Registration Number?", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                return false;
+            }
+            else if (cboType.Text == string.Empty || cboType.Text == null)
+            {
+                MessageBox.Show("Please enter a practitioner type!", "Practitioner type?", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+        #endregion Practitioner
     }
 
 

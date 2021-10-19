@@ -43,27 +43,27 @@ namespace WestSydMedPrac.Classes
         public Appointments(Practitioner practitioner)
         {
             //TODO - Implement this when you build the Practitioner(s) and Practitioner classes.
-            //try
-            //{
-            //    SqlDataAccessLayer myDAL = new SqlDataAccessLayer();
-            //    SqlParameter[] parameter = { new SqlParameter("@Practitioner_ID", practitioner.Practitioner_ID) };
+            try
+            {
+                SqlDataAccessLayer myDAL = new SqlDataAccessLayer();
+                SqlParameter[] parameter = { new SqlParameter("@Practitioner_ID", practitioner.Practitioner_ID) };
 
-            //    DataTable dtAppoinments = myDAL.ExecuteStoredProc("usp_GetAppointmentsDetailsByPractitioner_ID", parameter);
+                DataTable dtAppoinments = myDAL.ExecuteStoredProc("usp_GetAppointmentsDetailsByPractitioner_ID", parameter);
 
-            //    foreach (DataRow appointmentRow in dtAppoinments.Rows)
-            //    {
-            //        //Create a new instance of an Appointment for each row
-            //        Appointment appointment = new Appointment(appointmentRow);
+                foreach (DataRow appointmentRow in dtAppoinments.Rows)
+                {
+                    //Create a new instance of an Appointment for each row
+                    Appointment appointment = new Appointment(appointmentRow);
 
-            //        //Add the appointment to the class's list
-            //        this.Add(appointment);
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
+                    //Add the appointment to the class's list
+                    this.Add(appointment);
+                }
+            }
+            catch (Exception ex)
+            {
 
-            //    throw new Exception("Unable to retrieve Practitioner's appointments!", ex);
-            //}
+                throw new Exception("Unable to retrieve Practitioner's appointments!", ex);
+            }
 
 
         }
