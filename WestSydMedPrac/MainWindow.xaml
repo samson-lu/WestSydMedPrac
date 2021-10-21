@@ -28,7 +28,7 @@
                     <ListView x:Name="lvPractitioners" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="6" Background="LightGray" SelectionChanged="lvPractitioners_SelectionChanged">
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn Header="Patient Id" DisplayMemberBinding="{Binding Path=Patient_ID}"/>
+                                <GridViewColumn Header="Practitioner ID" DisplayMemberBinding="{Binding Path=Practitioner_ID}"/>
                                 <GridViewColumn Header="PractnrTypeName_Ref" DisplayMemberBinding="{Binding Path=PractnrTypeName_Ref}"/>
                                 <GridViewColumn Header="First Name" DisplayMemberBinding="{Binding Path=FirstName}"/>
                                 <GridViewColumn Header="Last Name" DisplayMemberBinding="{Binding Path=LastName}"/>
@@ -128,19 +128,19 @@
                         </Grid.RowDefinitions>
                         <Label Content="Availability" Grid.Row="0" Grid.Column="0" Margin="4,4,4,4"/>
                         <Label Content="Monday" Grid.Row="1" Grid.Column="0" Margin="2,2,2,2"></Label>
-                        <CheckBox x:Name="Monday" Grid.Row="1" Grid.Column="0" Margin="150,10,5,5" DataContext="{Binding SelectedItem, ElementName=lvPractitioners}" IsChecked="{Binding Monday, Mode=OneWay}"></CheckBox>
+                        <CheckBox x:Name="Monday" Grid.Row="1" Grid.Column="0" Margin="110,10,5,5" DataContext="{Binding SelectedItem, ElementName=lvPractitioners}" IsChecked="{Binding Monday, Mode=OneWay}"></CheckBox>
                         <Label Content="Tuesday" Grid.Row="2" Grid.Column="0" Margin="2,2,2,2"></Label>
-                        <CheckBox x:Name="Tuesday" Grid.Row="2" Grid.Column="0" Margin="150,10,5,5" DataContext="{Binding SelectedItem, ElementName=lvPractitioners}" IsChecked="{Binding Tuesday, Mode=OneWay}"></CheckBox>
+                        <CheckBox x:Name="Tuesday" Grid.Row="2" Grid.Column="0" Margin="110,10,5,5" DataContext="{Binding SelectedItem, ElementName=lvPractitioners}" IsChecked="{Binding Tuesday, Mode=OneWay}"></CheckBox>
                         <Label Content="Wednesday" Grid.Row="3" Grid.Column="0" Margin="2,2,2,2"></Label>
-                        <CheckBox x:Name="Wednesday" Grid.Row="3" Grid.Column="0" Margin="150,10,5,5" DataContext="{Binding SelectedItem, ElementName=lvPractitioners}" IsChecked="{Binding Wednesday, Mode=OneWay}"></CheckBox>
+                        <CheckBox x:Name="Wednesday" Grid.Row="3" Grid.Column="0" Margin="110,10,5,5" DataContext="{Binding SelectedItem, ElementName=lvPractitioners}" IsChecked="{Binding Wednesday, Mode=OneWay}"></CheckBox>
                         <Label Content="Thursday" Grid.Row="4" Grid.Column="0" Margin="2,2,2,2"></Label>
-                        <CheckBox x:Name="Thursday" Grid.Row="4" Grid.Column="0" Margin="150,10,5,5" DataContext="{Binding SelectedItem, ElementName=lvPractitioners}" IsChecked="{Binding Thursday, Mode=OneWay}"></CheckBox>
+                        <CheckBox x:Name="Thursday" Grid.Row="4" Grid.Column="0" Margin="110,10,5,5" DataContext="{Binding SelectedItem, ElementName=lvPractitioners}" IsChecked="{Binding Thursday, Mode=OneWay}"></CheckBox>
                         <Label Content="Friday" Grid.Row="5" Grid.Column="0" Margin="2,2,2,2"></Label>
-                        <CheckBox x:Name="Friday" Grid.Row="5" Grid.Column="0" Margin="150,10,5,5" DataContext="{Binding SelectedItem, ElementName=lvPractitioners}" IsChecked="{Binding Friday, Mode=OneWay}"></CheckBox>
+                        <CheckBox x:Name="Friday" Grid.Row="5" Grid.Column="0" Margin="110,10,5,5" DataContext="{Binding SelectedItem, ElementName=lvPractitioners}" IsChecked="{Binding Friday, Mode=OneWay}"></CheckBox>
                         <Label Content="Saturday" Grid.Row="6" Grid.Column="0" Margin="2,2,2,2"></Label>
-                        <CheckBox x:Name="Saturday" Grid.Row="6" Grid.Column="0" Margin="150,10,5,5" DataContext="{Binding SelectedItem, ElementName=lvPractitioners}" IsChecked="{Binding Saturday, Mode=OneWay}"></CheckBox>
+                        <CheckBox x:Name="Saturday" Grid.Row="6" Grid.Column="0" Margin="110,10,5,5" DataContext="{Binding SelectedItem, ElementName=lvPractitioners}" IsChecked="{Binding Saturday, Mode=OneWay}"></CheckBox>
                         <Label Content="Sunday" Grid.Row="7" Grid.Column="0" Margin="2,2,2,2"></Label>
-                        <CheckBox x:Name="Sunday" Grid.Row="7" Grid.Column="0" Margin="150,10,5,5" DataContext="{Binding SelectedItem, ElementName=lvPractitioners}" IsChecked="{Binding Sunday, Mode=OneWay}"></CheckBox>
+                        <CheckBox x:Name="Sunday" Grid.Row="7" Grid.Column="0" Margin="110,10,5,5" DataContext="{Binding SelectedItem, ElementName=lvPractitioners}" IsChecked="{Binding Sunday, Mode=OneWay}"></CheckBox>
                     </Grid>
                     <Grid Grid.Row="2" Grid.ColumnSpan="5">
                         <Grid.ColumnDefinitions>

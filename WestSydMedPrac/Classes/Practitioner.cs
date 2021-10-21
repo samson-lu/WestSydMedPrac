@@ -223,7 +223,6 @@ namespace WestSydMedPrac.Classes
                     SqlDataAccessLayer myDal = new SqlDataAccessLayer();
                     SqlParameter[] parameters =
                     {
-                    new SqlParameter("@Practitioner_ID", this.Practitioner_ID),
                     new SqlParameter("@PractnrTypeName_Ref", this.PractnrTypeName_Ref),
                     new SqlParameter("@FirstName", this.FirstName),
                     new SqlParameter("@LastName", this.LastName),
@@ -245,13 +244,13 @@ namespace WestSydMedPrac.Classes
 
 
                     //convert date value to bit type
+                    parameters[10].SqlDbType = SqlDbType.Bit;
                     parameters[11].SqlDbType = SqlDbType.Bit;
                     parameters[12].SqlDbType = SqlDbType.Bit;
                     parameters[13].SqlDbType = SqlDbType.Bit;
                     parameters[14].SqlDbType = SqlDbType.Bit;
                     parameters[15].SqlDbType = SqlDbType.Bit;
                     parameters[16].SqlDbType = SqlDbType.Bit;
-                    parameters[17].SqlDbType = SqlDbType.Bit;
 
 
                     int rowsAffected = myDal.ExecuteNonQuerySP("usp_InsertPractitioner", parameters);
