@@ -515,7 +515,7 @@ namespace WestSydMedPrac
                         if (selectedPractitioner.Update() == 1)
                         {
                             MessageBox.Show("Practitioner's details successfully updated", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                            RefreshPatientList();
+                            RefreshPractitionerList();
                             lvPractitioners.SelectedIndex = selectedIndex;
                             lvPractitioners.ScrollIntoView(lvPractitioners.SelectedIndex);
                         }
