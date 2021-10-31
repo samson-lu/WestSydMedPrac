@@ -39,13 +39,55 @@
                                 <GridViewColumn Header="Home Phone" DisplayMemberBinding="{Binding Path=HomePhone}"/>
                                 <GridViewColumn Header="Mobile Phone" DisplayMemberBinding="{Binding Path=Mobile}"/>
                                 <GridViewColumn Header="RegistrationNumber" DisplayMemberBinding="{Binding Path=RegistrationNumber}"/>
-                                <GridViewColumn Header="Monday" DisplayMemberBinding="{Binding Path=Monday}"/>
-                                <GridViewColumn Header="Tuesday" DisplayMemberBinding="{Binding Path=Tuesday}"/>
-                                <GridViewColumn Header="Wednesday" DisplayMemberBinding="{Binding Path=Wednesday}"/>
-                                <GridViewColumn Header="Thursday" DisplayMemberBinding="{Binding Path=Thursday}"/>
-                                <GridViewColumn Header="Friday" DisplayMemberBinding="{Binding Path=Friday}"/>
-                                <GridViewColumn Header="Saturday" DisplayMemberBinding="{Binding Path=Saturday}"/>
-                                <GridViewColumn Header="Sunday" DisplayMemberBinding="{Binding Path=Sunday}"/>
+                                <GridViewColumn Header="Monday">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <CheckBox IsChecked="{Binding Path=Monday}" IsEnabled="False"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Tuesday">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <CheckBox IsChecked="{Binding Path=Tuesday}" IsEnabled="False"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Wednesday">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <CheckBox IsChecked="{Binding Path=Wednesday}" IsEnabled="False"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Thursday">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <CheckBox IsChecked="{Binding Path=Thursday}" IsEnabled="False"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Friday">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <CheckBox IsChecked="{Binding Path=Friday}" IsEnabled="False"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Saturday">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <CheckBox IsChecked="{Binding Path=Saturday}" IsEnabled="False"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="Sunday">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <CheckBox IsChecked="{Binding Path=Sunday}" IsEnabled="False"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
                             </GridView>
                         </ListView.View>
                     </ListView>
